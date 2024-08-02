@@ -1,23 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Item from "./components/Item";
 import Add from "/images/add.svg";
 import "./App.css";
 
 function App() {
-  const [formData, setFormData] = useState({
-    todo: "",
-    isAdded: false
+  // const [todos, setTodos] = useState({
+  //   todo: "",
+  //   isAdded: false
+  // });
+  const [todos, setTodos] = useState(()=> {
+    const savedTodos = localStorage.getItem('todos');
+    return savedTodos ? JSON.parse(savedTodos) : []
   });
+
+  useEffect(()=> {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos]); 
+
   function handleChange(event) {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
+    setTodos((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    console.log(formData);
+    console.log(todos);
   }
-  function addTodo() {
-
+  function addTodo(text) {
+    const newTodo = {id: Date.now(), text, completed: false};
+    setTodos([...todos, newTodo])
   }
 
   return (
@@ -33,13 +43,13 @@ function App() {
             placeholder="Add a todo item..."
             name="todo"
             onChange={handleChange}
-            value={formData.todo}
+            value={todos.todo}
           />
           <img className="w-10" src={Add} alt="" onClick={addTodo} />
         </div>
-        {formData.isAdded && <div className="flex flex-col divide-y-2">
+        {todos.isAdded && <div className="flex flex-col divide-y-2">
           <Item 
-            todoText={formData.todo} 
+            todoText={todos.todo} 
           />
         </div>}
       </div>
