@@ -4,10 +4,6 @@ import Add from "/images/add.svg";
 import "./App.css";
 
 function App() {
-  // const [todos, setTodos] = useState({
-  //   todo: "",
-  //   isAdded: false
-  // });
   const [todos, setTodos] = useState(()=> {
     const savedTodos = localStorage.getItem('todos');
     return savedTodos ? JSON.parse(savedTodos) : []
