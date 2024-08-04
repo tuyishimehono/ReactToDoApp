@@ -43,11 +43,11 @@ function App() {
           />
           <img className="w-10" src={Add} alt="" onClick={addTodo} />
         </div>
-        {todos.isAdded && <div className="flex flex-col divide-y-2">
-          <Item 
-            todoText={todos.todo} 
-          />
-        </div>}
+        <div className="flex flex-col divide-y-2">
+          {todos.map(todo=> (
+            <Item key = {todo.id} todoText = {todo.text} />
+          ))}
+        </div>
       </div>
     </>
   );
