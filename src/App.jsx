@@ -55,7 +55,7 @@ function App() {
         </div>
         <div className="flex flex-col divide-y-2">
           {todos.map((todo) => (
-            <Item key={todo.id} todoText={todo.text} delete={() => deleteTodo(todo.id)} toggle={() => toggleTodo(todo.id)} />
+            <Item key={todo.id} todoText={todo.text} completed={todo.completed} delete={() => deleteTodo(todo.id)} toggle={() => toggleTodo(todo.id)} />
           ))}
         </div>
       </div>
