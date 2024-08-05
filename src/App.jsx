@@ -17,7 +17,8 @@ function App() {
   function handleChange(event) {
     setInputValue(event.target.value);
   }
-  function addTodo() {
+  function addTodo(e) {
+    e.preventDefault();
     if (inputValue.trim() !== "") {
       const newTodos = [...todos, { id: Date.now(), text: inputValue }];
       setTodos(newTodos);
@@ -42,7 +43,7 @@ function App() {
         <h1 className="text-9xl text-gray-300 font-extrabold pt-10 pb-8">
           todos
         </h1>
-        <div className="flex justify-between pb-10">
+        <form onSubmit={addTodo} className="flex justify-between pb-10">
           <input
             className="w-[40rem] px-3 py-5 border shadow-xl text-2xl rounded-2xl"
             type="text"
@@ -52,7 +53,7 @@ function App() {
             value={todos.todo}
           />
           <img className="w-10" src={Add} alt="Add button" onClick={addTodo} />
-        </div>
+        </form>
         <div className="flex flex-col divide-y-2">
           {todos.map((todo) => (
             <Item
