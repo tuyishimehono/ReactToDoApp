@@ -8,22 +8,21 @@ function App() {
     const savedTodos = localStorage.getItem('todos');
     return savedTodos ? JSON.parse(savedTodos) : []
   });
+  const [inputValue, setInputValue] = useState('')
 
   useEffect(()=> {
     localStorage.setItem('todos', JSON.stringify(todos))
   }, [todos]); 
 
   function handleChange(event) {
-    const { name, value } = event.target;
-    setTodos((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    console.log(todos);
+    setInputValue(event.target.value)
   }
-  function addTodo(text) {
-    const newTodo = {id: Date.now(), text, completed: false};
-    setTodos([...todos, newTodo])
+  function addTodo() {
+    if (inputValue.trim() !== '') {
+      const newTodos = [...todos, { id: Date.now(), text: inputValue }];
+      setTodos(newTodos);
+      setInputValue('');
+    }
   }
 
   return (
@@ -41,7 +40,7 @@ function App() {
             onChange={handleChange}
             value={todos.todo}
           />
-          <img className="w-10" src={Add} alt="" onClick={addTodo} />
+          <img className="w-10" src={Add} alt="Add button" onClick={addTodo} />
         </div>
         <div className="flex flex-col divide-y-2">
           {todos.map(todo=> (
