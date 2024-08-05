@@ -4,27 +4,38 @@ import Add from "/images/add.svg";
 import "./App.css";
 
 function App() {
-  const [todos, setTodos] = useState(()=> {
-    const savedTodos = localStorage.getItem('todos');
-    return savedTodos ? JSON.parse(savedTodos) : []
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
   });
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState("");
 
-  useEffect(()=> {
-    localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos]); 
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   function handleChange(event) {
-    setInputValue(event.target.value)
+    setInputValue(event.target.value);
   }
   function addTodo() {
-    if (inputValue.trim() !== '') {
+    if (inputValue.trim() !== "") {
       const newTodos = [...todos, { id: Date.now(), text: inputValue }];
       setTodos(newTodos);
-      setInputValue('');
+      setInputValue("");
     }
   }
 
+  function toggleTodo(id) {
+    setTodos(
+      todos.map((todo) => 
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
+  function deleteTodo(id) {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  }
   return (
     <>
       <div className="flex flex-col items-center">
@@ -43,8 +54,8 @@ function App() {
           <img className="w-10" src={Add} alt="Add button" onClick={addTodo} />
         </div>
         <div className="flex flex-col divide-y-2">
-          {todos.map(todo=> (
-            <Item key = {todo.id} todoText = {todo.text} />
+          {todos.map((todo) => (
+            <Item key={todo.id} todoText={todo.text} delete={() => deleteTodo(todo.id)} toggle={() => toggleTodo(todo.id)} />
           ))}
         </div>
       </div>
